@@ -1,13 +1,13 @@
 """An example of doubly linked list with a dummy nodes"""
 
+
 class Node:
     """A node of doubly linked list with a dummy nodes
 
     To make it fully interchangable with a simple doubly linked list,
     there is a prev and next properties to hide dummy nodes"""
-    def __init__(self, value, is_dummy=False):
+    def __init__(self, value):
         self.value = value
-        self.is_dummy = is_dummy
         # prev_raw and next_raw should be protected but pylint doesn't have
         # a friendship support: https://github.com/PyCQA/pylint/issues/4362
         self.prev_raw = None
@@ -15,7 +15,8 @@ class Node:
 
     @property
     def prev(self):
-        if self.prev_raw is not None and self.prev_raw.is_dummy:
+        # isinstance(self.prev_raw, DummyNode) doesn't work here
+        if hasattr(self.prev_raw, 'dummy_marker'):
             return None
         return self.prev_raw
 
@@ -25,7 +26,8 @@ class Node:
 
     @property
     def next(self):
-        if self.next_raw is not None and self.next_raw.is_dummy:
+        # isinstance(self.next_raw, DummyNode) doesn't work here
+        if hasattr(self.next_raw, 'dummy_marker'):
             return None
         return self.next_raw
 
@@ -33,11 +35,18 @@ class Node:
     def next(self, value):
         self.next_raw = value
 
+class DummyNode(Node):
+    """A dummy node"""
+
+    def __init__(self):
+        Node.__init__(self, None)
+        self.dummy_marker = None
+
 class LinkedList3:
     """A doubly linked list"""
     def __init__(self):
-        self._head = Node(None, is_dummy=True)
-        self._tail = Node(None, is_dummy=True)
+        self._head = DummyNode()
+        self._tail = DummyNode()
         self._head.next_raw = self._tail
         self._tail.prev_raw = self._head
 

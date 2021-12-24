@@ -7,14 +7,14 @@ def calculate(input_string: str):
     # populate input_stack
     input_stack = Stack()
     for item in reversed(input_string.split(' ')):
-        if item in ("+", "*", "="):
+        if item in ("+", "-", "*", "/", "="):
             input_stack.push(item)
         elif item.isdigit():
             input_stack.push(int(item))
         else:
             raise ValueError(
-                "Only '+', '*', '=' and integers are supported, and" +
-                "they should be delimited by exactly one space."
+                "Only '+', '-', '*', '/', '=' and integers are supported, " +
+                "and they should be delimited by exactly one space."
                 )
 
     # calculate
@@ -22,25 +22,22 @@ def calculate(input_string: str):
     while input_stack.size() > 0:
         item = input_stack.pop()
 
-        if item == "+":
+        if item in ("+", "-", "*", "/"):
             if args_buffer.size() <= 1:
-                raise ValueError("Not enough arguments before '+'")
+                raise ValueError(f"Not enough arguments before '{item}'")
 
-            value = args_buffer.pop()
-            while args_buffer.size() > 0:
-                value += args_buffer.pop()
+            right = args_buffer.pop()
+            left = args_buffer.pop()
+            if item == "+":
+                result = left + right
+            elif item == "-":
+                result = left - right
+            elif item == "*":
+                result = left * right
+            elif item == "/":
+                result = left / right
 
-            args_buffer.push(value)
-
-        elif item == "*":
-            if args_buffer.size() <= 1:
-                raise ValueError("Not enough arguments before '*'")
-
-            value = args_buffer.pop()
-            while args_buffer.size() > 0:
-                value *= args_buffer.pop()
-
-            args_buffer.push(value)
+            args_buffer.push(result)
 
         elif item == "=":
             if input_stack.size() != 0:

@@ -9,7 +9,7 @@ def check_bracket_sequence(input_string: str):
         if char == '(':
             stack.push(char)
         elif char == ')':
-            if not stack.pop() == '(':
+            if stack.pop() != '(':
                 return False
 
     return stack.size() == 0

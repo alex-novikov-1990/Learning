@@ -28,3 +28,10 @@ def test_calc():
 
     with pytest.raises(ValueError):
         calculate("8 2 + 5 * 9")
+
+    with pytest.raises(ValueError):
+        calculate("8 2 5 * 9 + =")
+
+    assert calculate("8 2 + 5 / =") == 2
+    assert calculate("5 2 * 5 - =") == 5
+    assert calculate("1 2 + 3 4 + * =") == 21 # (1+2) * (3+4)

@@ -3,8 +3,7 @@
 
 def rotate(queue, n):
     size = queue.size()
-    while n > size:
-        n -= size
+    n = n % size
 
     for _ in range(n):
         queue.enqueue(queue.dequeue())

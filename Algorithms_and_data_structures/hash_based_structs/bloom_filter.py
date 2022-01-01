@@ -1,10 +1,11 @@
 """An example of bloom filter"""
 
+
 class BloomFilter:
     """A bloom filter with an integer number used as a bit storage"""
 
     def __init__(self, f_len):
-        if (f_len > 32):
+        if f_len > 32:
             raise ValueError("Filter length larger than 32 is not supported")
 
         self.filter_len = f_len

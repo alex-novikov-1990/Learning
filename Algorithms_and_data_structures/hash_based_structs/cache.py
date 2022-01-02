@@ -1,7 +1,9 @@
-"""An example of cache"""
+"""An example of cache."""
 
 class NativeCache:
-    """A cache based on a fixed size dictionary"""
+    """A cache, which is based on a fixed size dictionary
+    and uses cache hits counters to choose an element to
+    overwrite on cache overflow."""
 
     def __init__(self, sz):
         self.size = sz
@@ -42,6 +44,10 @@ class NativeCache:
 
 
     def is_key(self, key):
+        """Note that this method calls don't increase hits counters."""
+        # it was tough decision whether to count is_key towards cache hits,
+        # and the main reasoning behind not counting is that the
+        # `if is_key(key) than get(key)` idiom should be counted as one hit.
         slot, _ = self.__find_slot(key)
         return (slot is not None) and (self.slots[slot] == key)
 

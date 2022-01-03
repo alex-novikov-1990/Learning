@@ -91,6 +91,11 @@ class SimpleTree:
 
         # fail fast, save the tree
         self.__should_contain(NewParent, "NewParent")
+        new_ancestor = NewParent
+        while new_ancestor is not None:
+            if new_ancestor == OriginalNode:
+                raise ValueError("Can't move node to its own subtree")
+            new_ancestor = new_ancestor.Parent
 
         self.DeleteNode(OriginalNode)
         self.AddChild(NewParent, OriginalNode)

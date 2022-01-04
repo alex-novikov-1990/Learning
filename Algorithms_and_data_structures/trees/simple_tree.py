@@ -15,36 +15,36 @@ class SimpleTree:
         """The root could be None"""
         self.Root = root
 
-    def __should_contain(self, node, arg_name):
-        if self.Root is None:
-            if node is None:
-                return
-            raise ValueError(f"{arg_name} doesn't belong to this tree")
+    # def __should_contain(self, node, arg_name):
+    #     if self.Root is None:
+    #         if node is None:
+    #             return
+    #         raise ValueError(f"{arg_name} doesn't belong to this tree")
 
-        root = node
-        while root.Parent is not None:
-            root = root.Parent
+    #     root = node
+    #     while root.Parent is not None:
+    #         root = root.Parent
 
-        if self.Root != root:
-            raise ValueError(f"{arg_name} doesn't belong to this tree")
+    #     if self.Root != root:
+    #         raise ValueError(f"{arg_name} doesn't belong to this tree")
 
 
     def AddChild(self, ParentNode, NewChild):
-        if NewChild.Parent is not None:
-            raise ValueError(
-                "It is a tree, not a graph (new child has a parent already)"
-            )
+        # if NewChild.Parent is not None:
+        #     raise ValueError(
+        #         "It is a tree, not a graph (new child has a parent already)"
+        #     )
 
         if self.Root is None and ParentNode is None:
             self.Root = NewChild
             return
 
-        self.__should_contain(ParentNode, "ParentNode")
+        # self.__should_contain(ParentNode, "ParentNode")
         ParentNode.Children.append(NewChild)
         NewChild.Parent = ParentNode
 
     def DeleteNode(self, NodeToDelete):
-        self.__should_contain(NodeToDelete, "NodeToDelete")
+        # self.__should_contain(NodeToDelete, "NodeToDelete")
         if self.Root == NodeToDelete:
             self.Root = None
             return
@@ -86,16 +86,16 @@ class SimpleTree:
         return find(self.Root)
 
     def MoveNode(self, OriginalNode, NewParent):
-        if OriginalNode == self.Root:
-            raise ValueError("Can't move root node")
+        # if OriginalNode == self.Root:
+        #     raise ValueError("Can't move root node")
 
         # fail fast, save the tree
-        self.__should_contain(NewParent, "NewParent")
-        new_ancestor = NewParent
-        while new_ancestor is not None:
-            if new_ancestor == OriginalNode:
-                raise ValueError("Can't move node to its own subtree")
-            new_ancestor = new_ancestor.Parent
+        # self.__should_contain(NewParent, "NewParent")
+        # new_ancestor = NewParent
+        # while new_ancestor is not None:
+        #     if new_ancestor == OriginalNode:
+        #         raise ValueError("Can't move node to its own subtree")
+        #     new_ancestor = new_ancestor.Parent
 
         self.DeleteNode(OriginalNode)
         self.AddChild(NewParent, OriginalNode)

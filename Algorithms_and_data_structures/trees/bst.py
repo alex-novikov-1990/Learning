@@ -113,7 +113,6 @@ class BST:
                     replacement.Parent.LeftChild = None
                 else:
                     replacement.Parent.RightChild = None
-                replacement.Parent.LeftChild = None
                 replacement.Parent = None
             
         elif to_delete.LeftChild is not None:
@@ -125,9 +124,9 @@ class BST:
             # extract
             if replacement.LeftChild is not None:
                 if replacement.Parent != to_delete:
-                    replacement.Parent.RightChild = replacement.RightChild
+                    replacement.Parent.RightChild = replacement.LeftChild
                 else:
-                    replacement.Parent.LeftChild = replacement.RightChild
+                    replacement.Parent.LeftChild = replacement.LeftChild
 
                 replacement.LeftChild.Parent = replacement.Parent
                 replacement.Parent = None
@@ -163,6 +162,9 @@ class BST:
         to_delete.Parent = None
         to_delete.LeftChild = None
         to_delete.RightChild = None
+
+        if self.Root == to_delete:
+            self.Root = replacement
 
         return True
 

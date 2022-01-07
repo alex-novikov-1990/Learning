@@ -51,3 +51,12 @@ def test_bst():
     assert not bst.FindNodeByKey(20).NodeHasKey
     assert bst.FindNodeByKey(24).Node.LeftChild.NodeKey == 22
     assert bst.FindNodeByKey(22).Node.Parent.NodeKey == 24
+
+
+    assert bst.Count() == 14
+    for i in range(0, 14):
+        key = bst.Root.NodeKey
+        bst.DeleteNodeByKey(key)
+        assert not bst.FindNodeByKey(key).NodeHasKey
+        assert bst.Count() == 13-i
+        assert (bst.Root is None) == (i == 13)

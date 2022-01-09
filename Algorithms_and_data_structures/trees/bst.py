@@ -114,7 +114,7 @@ class BST:
                 else:
                     replacement.Parent.RightChild = None
                 replacement.Parent = None
-            
+
         elif to_delete.LeftChild is not None:
             # find in left subtree
             replacement = to_delete.LeftChild
@@ -147,7 +147,7 @@ class BST:
             to_delete.Parent.LeftChild = replacement
         else:
             raise RuntimeError()
-        
+
         if to_delete.LeftChild is not None:
             to_delete.LeftChild.Parent = replacement
 
@@ -181,3 +181,58 @@ class BST:
             return result
 
         return count(self.Root)
+
+    def WideAllNodes(self):
+        """Returns breadth-first tuple of tree nodes"""
+        if self.Root is None:
+            return tuple()
+
+        # consider deque
+        result = [self.Root]
+        i = 0
+        while i < len(result):
+            if result[i].LeftChild is not None:
+                result.append(result[i].LeftChild)
+            if result[i].RightChild is not None:
+                result.append(result[i].RightChild)
+            i += 1
+
+        return tuple(result)
+
+    def DeepAllNodes(self, mode: int = 0):
+        """Returns depth-first tuple of tree nodes.
+        mode: 0 - in-order, 1 - post-order, 2 - pre-order"""
+
+        if mode == 0:
+            def walk(node, result):
+                if node is None:
+                    return
+
+                walk(node.LeftChild, result)
+                result.append(node)
+                walk(node.RightChild, result)
+        elif mode == 1:
+            def walk(node, result):
+                if node is None:
+                    return
+
+                walk(node.LeftChild, result)
+                walk(node.RightChild, result)
+                result.append(node)
+        elif mode == 2:
+            def walk(node, result):
+                if node is None:
+                    return
+
+                result.append(node)
+                walk(node.LeftChild, result)
+                walk(node.RightChild, result)
+        else:
+            raise ValueError(
+                f"Unknown tree walk mode: {mode} (should be 0, 1 or 2)"
+            )
+
+        # consider deque
+        result = []
+        walk(self.Root, result)
+        return tuple(result)

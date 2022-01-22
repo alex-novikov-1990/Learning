@@ -7,6 +7,7 @@ class SimpleTreeNode:
         self.NodeValue = val
         self.Parent = parent
         self.Children = []
+        self.level = None
 
 class SimpleTree:
     """Simple tree"""
@@ -129,3 +130,23 @@ class SimpleTree:
                 fill_levels(child, level+1)
 
         fill_levels(self.Root)
+
+    def EvenTrees(self):
+        """Returns a list [Parent, Child, Parent, Child, ...] of
+        links that could be broken to make even forest out of even tree"""
+
+        if self.Root is None:
+            return []
+
+        result = []
+        def walk(node):
+            count = 1 + sum(map(walk, node.Children))
+            if count % 2 == 0 and node.Parent:
+                result.append(node.Parent)
+                result.append(node)
+
+            return count
+
+        if walk(self.Root) % 2 == 1:
+            raise ValueError("Could not make even forest from odd tree")
+        return result

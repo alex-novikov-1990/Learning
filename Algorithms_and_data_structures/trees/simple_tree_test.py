@@ -132,3 +132,27 @@ def test_tree_node_levels():
     assert node3.level == 1
     assert node4.level == 2
     assert node5.level == 3
+
+def test_even_trees():
+    tree = SimpleTree(None)
+    assert tree.EvenTrees() == []
+
+    tree = SimpleTree(None)
+    tree.AddChild(None, SimpleTreeNode(0, None))
+    tree.AddChild(tree.Root, SimpleTreeNode(1, None))
+    assert tree.EvenTrees() == []
+
+    tree = SimpleTree(None)
+    nodes = [SimpleTreeNode(1, None) for _ in range(10)]
+    tree.AddChild(None, nodes[0])
+    tree.AddChild(nodes[0], nodes[1])
+    tree.AddChild(nodes[1], nodes[4])
+    tree.AddChild(nodes[1], nodes[6])
+    tree.AddChild(nodes[0], nodes[2])
+    tree.AddChild(nodes[2], nodes[3])
+    tree.AddChild(nodes[0], nodes[5])
+    tree.AddChild(nodes[5], nodes[7])
+    tree.AddChild(nodes[7], nodes[8])
+    tree.AddChild(nodes[7], nodes[9])
+
+    assert tree.EvenTrees() == [nodes[0], nodes[2], nodes[0], nodes[5]]

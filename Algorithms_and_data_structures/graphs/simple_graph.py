@@ -6,6 +6,7 @@ class Vertex:
 
     def __init__(self, val):
         self.Value = val
+        self.Hit = False
 
 class SimpleGraph:
     """Graph with edges defined as an adjacency matrix"""
@@ -50,3 +51,65 @@ class SimpleGraph:
         """v1, v2 is indices"""
         self.m_adjacency[v1][v2] = 0
         self.m_adjacency[v2][v1] = 0
+
+    def DepthFirstSearch(self, VFrom, VTo):
+        """VFrom and VTo are indices. Searches a path between vertices and
+        returns [VFrom, ..., Vto] array of indices if the path exists
+        or [] if it doesn't."""
+
+        if VFrom == VTo:
+            return [VFrom]
+
+        path = []
+        for v in self.vertex:
+            v.Hit = False
+
+        def search(v_id):
+            path.append(v_id)
+            self.vertex[v_id].Hit = True
+            if self.m_adjacency[v_id][VTo] == 1:
+                path.append(VTo)
+                return True
+
+            for i in range(self.max_vertex):
+                if self.m_adjacency[v_id][i] == 1 and \
+                   not self.vertex[i].Hit and \
+                   search(i):
+                    return True
+
+            path.pop()
+            return False
+
+        search(VFrom)
+        return path
+
+    def BreadthFirstSearch(self, VFrom, VTo):
+        """VFrom and VTo are indices. Searches a path between vertices and
+        returns [VFrom, ..., Vto] array of indices if the path exists
+        or [] if it doesn't."""
+
+        if VFrom == VTo:
+            return [VFrom]
+
+        for v in self.vertex:
+            v.Hit = False
+            v.Path = None
+
+        queue = [] # deque
+        queue.append(VFrom)
+        self.vertex[VFrom].Hit = True
+        self.vertex[VFrom].Path = [VFrom]
+        while True:
+            current = queue.pop(0)
+            if current == VTo:
+                return self.vertex[current].Path
+
+            for i in range(self.max_vertex):
+                if self.m_adjacency[current][i] == 1 and \
+                   not self.vertex[i].Hit:
+                    self.vertex[i].Hit = True
+                    self.vertex[i].Path = self.vertex[current].Path + [i]
+                    queue.append(i)
+
+            if len(queue) == 0:
+                return []

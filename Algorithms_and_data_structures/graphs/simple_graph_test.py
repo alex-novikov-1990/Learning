@@ -167,3 +167,19 @@ def assert_v_eq(left, right):
     for i in range(len(left)):
         assert left[i] is None and right[i] is None or \
             left[i].Value == right[i].Value
+
+def test_graph_search():
+    graph = SimpleGraph(5)
+    for i in range(5):
+        graph.AddVertex(i)
+    graph.AddEdge(0, 1)
+    graph.AddEdge(0, 2)
+    graph.AddEdge(1, 2)
+    graph.AddEdge(2, 3)
+    for _ in range(2): # repeatability
+        assert graph.DepthFirstSearch(0, 0) == [0]
+        assert graph.DepthFirstSearch(0, 3) == [0, 1, 2, 3]
+        assert graph.DepthFirstSearch(0, 4) == []
+        assert graph.BreadthFirstSearch(0, 0) == [0]
+        assert graph.BreadthFirstSearch(0, 3) == [0, 2, 3]
+        assert graph.BreadthFirstSearch(0, 4) == []

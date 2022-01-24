@@ -176,10 +176,14 @@ def test_graph_search():
     graph.AddEdge(0, 2)
     graph.AddEdge(1, 2)
     graph.AddEdge(2, 3)
+
+    def assert_eq(vertices, values):
+        assert list(map(lambda v: v.Value, vertices)) == values
+
     for _ in range(2): # repeatability
-        assert graph.DepthFirstSearch(0, 0) == [0]
-        assert graph.DepthFirstSearch(0, 3) == [0, 1, 2, 3]
-        assert graph.DepthFirstSearch(0, 4) == []
-        assert graph.BreadthFirstSearch(0, 0) == [0]
-        assert graph.BreadthFirstSearch(0, 3) == [0, 2, 3]
-        assert graph.BreadthFirstSearch(0, 4) == []
+        assert_eq(graph.DepthFirstSearch(0, 0), [0])
+        assert_eq(graph.DepthFirstSearch(0, 3), [0, 1, 2, 3])
+        assert_eq(graph.DepthFirstSearch(0, 4), [])
+        assert_eq(graph.BreadthFirstSearch(0, 0), [0])
+        assert_eq(graph.BreadthFirstSearch(0, 3), [0, 2, 3])
+        assert_eq(graph.BreadthFirstSearch(0, 4), [])

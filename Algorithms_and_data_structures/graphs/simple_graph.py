@@ -57,18 +57,21 @@ class SimpleGraph:
         returns [VFrom, ..., Vto] array of indices if the path exists
         or [] if it doesn't."""
 
+        if self.vertex[VFrom] is None:
+            return []
+
         if VFrom == VTo:
-            return [VFrom]
+            return [self.vertex[VFrom]]
 
         path = []
         for v in self.vertex:
             v.Hit = False
 
         def search(v_id):
-            path.append(v_id)
+            path.append(self.vertex[v_id])
             self.vertex[v_id].Hit = True
             if self.m_adjacency[v_id][VTo] == 1:
-                path.append(VTo)
+                path.append(self.vertex[VTo])
                 return True
 
             for i in range(self.max_vertex):
@@ -88,8 +91,11 @@ class SimpleGraph:
         returns [VFrom, ..., Vto] array of indices if the path exists
         or [] if it doesn't."""
 
+        if self.vertex[VFrom] is None:
+            return []
+
         if VFrom == VTo:
-            return [VFrom]
+            return [self.vertex[VFrom]]
 
         for v in self.vertex:
             v.Hit = False
@@ -98,7 +104,7 @@ class SimpleGraph:
         queue = [] # deque
         queue.append(VFrom)
         self.vertex[VFrom].Hit = True
-        self.vertex[VFrom].Path = [VFrom]
+        self.vertex[VFrom].Path = [self.vertex[VFrom]]
         while True:
             current = queue.pop(0)
             if current == VTo:
@@ -108,7 +114,9 @@ class SimpleGraph:
                 if self.m_adjacency[current][i] == 1 and \
                    not self.vertex[i].Hit:
                     self.vertex[i].Hit = True
-                    self.vertex[i].Path = self.vertex[current].Path + [i]
+                    self.vertex[i].Path = \
+                        self.vertex[current].Path + \
+                        [self.vertex[i]]
                     queue.append(i)
 
             if len(queue) == 0:

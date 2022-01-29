@@ -169,16 +169,13 @@ def assert_v_eq(left, right):
             left[i].Value == right[i].Value
 
 def test_graph_search():
-    graph = SimpleGraph(5)
+    graph = SimpleGraph(7)
     for i in range(5):
         graph.AddVertex(i)
     graph.AddEdge(0, 1)
     graph.AddEdge(0, 2)
     graph.AddEdge(1, 2)
     graph.AddEdge(2, 3)
-
-    def assert_eq(vertices, values):
-        assert list(map(lambda v: v.Value, vertices)) == values
 
     for _ in range(2): # repeatability
         assert_eq(graph.DepthFirstSearch(0, 0), [0])
@@ -187,3 +184,40 @@ def test_graph_search():
         assert_eq(graph.BreadthFirstSearch(0, 0), [0])
         assert_eq(graph.BreadthFirstSearch(0, 3), [0, 2, 3])
         assert_eq(graph.BreadthFirstSearch(0, 4), [])
+
+def test_graph_weak_search():
+    graph = SimpleGraph(12)
+    assert_eq(graph.WeakVertices(), [])
+
+    for i in range(9):
+        graph.AddVertex(i)
+    assert_eq(graph.WeakVertices(), [i for i in range(9)])
+
+    graph.AddEdge(0, 1)
+    graph.AddEdge(0, 2)
+    graph.AddEdge(1, 3)
+    graph.AddEdge(2, 3)
+    assert_eq(graph.WeakVertices(), [i for i in range(9)])
+
+    graph.AddEdge(1, 2)
+    assert_eq(graph.WeakVertices(), [i for i in range(4,9)])
+
+    graph.AddEdge(2, 5)
+    graph.AddEdge(3, 4)
+    graph.AddEdge(4, 5)
+    graph.AddEdge(5, 6)
+    graph.AddEdge(5, 7)
+    assert_eq(graph.WeakVertices(), [i for i in range(4,9)])
+
+    graph.AddEdge(6, 7)
+    graph.AddEdge(6, 8)
+    assert_eq(graph.WeakVertices(), [4, 8])
+
+    graph.AddEdge(4, 7)
+    assert_eq(graph.WeakVertices(), [8])
+
+    graph.AddEdge(7, 8)
+    assert_eq(graph.WeakVertices(), [])
+
+def assert_eq(vertices, values):
+    assert list(map(lambda v: v.Value, vertices)) == values

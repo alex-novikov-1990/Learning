@@ -65,7 +65,8 @@ class SimpleGraph:
 
         path = []
         for v in self.vertex:
-            v.Hit = False
+            if v is not None:
+                v.Hit = False
 
         def search(v_id):
             path.append(self.vertex[v_id])
@@ -98,8 +99,9 @@ class SimpleGraph:
             return [self.vertex[VFrom]]
 
         for v in self.vertex:
-            v.Hit = False
-            v.Path = None
+            if v is not None:
+                v.Hit = False
+                v.Path = None
 
         queue = [] # deque
         queue.append(VFrom)
@@ -121,3 +123,23 @@ class SimpleGraph:
 
             if len(queue) == 0:
                 return []
+
+    def WeakVertices(self):
+        weak = [True] * self.max_vertex
+
+        for i in range(self.max_vertex):
+            if self.vertex[i] is None:
+                weak[i] = False
+                continue
+
+            neighbors = []
+            for j in range(i+1,self.max_vertex):
+                if self.m_adjacency[i][j] == 1:
+                    for k in neighbors:
+                        if self.m_adjacency[j][k] == 1:
+                            weak[i] = False
+                            weak[j] = False
+                            weak[k] = False
+                    neighbors.append(j)
+
+        return [self.vertex[i] for i,isWeak in enumerate(weak) if isWeak]

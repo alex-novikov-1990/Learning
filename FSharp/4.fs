@@ -2,11 +2,13 @@
 let rec fibo = function
     | 0 -> 0
     | 1 -> 1
+    | n when n < 0 -> 0
     | n -> fibo(n-1) + fibo(n-2)
 
 // 7.1.2
 let rec sum = function
     | 1 -> 1
+    | n when n < 1 -> 0
     | n -> n + sum(n-1)
 
 // 7.1.3

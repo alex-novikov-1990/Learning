@@ -7,11 +7,11 @@ let prime n =
     | 2 | 3 -> true
     | _ when n < 2 || n % 2 = 0 -> false
     | _ ->
-      let rec loop i =
-        if n % i = 0 then
-          false
-        elif i * i > n then
-          true
-        else
-          loop (i + 2)
-      loop 3
+        let rec loop i =
+            if n % i = 0 then
+                false
+            elif i * i > n then
+                true
+            else
+                loop (i + 2)
+        loop 3

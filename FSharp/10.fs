@@ -4,4 +4,4 @@ type TimeOfDay = {
     f: string;    // "AM"/"PM"
 }
 
-let (.>.) (x: TimeOfDay) (y: TimeOfDay) = x.f > y.f || x > y
+let (.>.) (x: TimeOfDay) (y: TimeOfDay) = if x.f <> y.f then x.f > y.f else x > y

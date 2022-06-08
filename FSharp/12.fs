@@ -14,4 +14,4 @@ let upto n = buildList 1 n 1 // [ 1..n ]
 let dnto n = buildList n 1 -1 // [n..(-1)..1]
 
 // 34.3
-let rec evenn n = buildList 2 (2 * n) 2 // [ 2..2..(2*n) ]
+let rec evenn n = buildList 0 (2 * n - 2) 2 // [ 0..2..(2*n-2) ]

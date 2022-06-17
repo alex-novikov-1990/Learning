@@ -1,7 +1,7 @@
 // 42.3
 let rec allSubsets n k =
-    if k <= 0 || n <= k then
-        set [set []]
+    if 0 > k || k > n then
+        set []
     else if k <= n/2 then
         // TODO: ensure best choice of internal types
         let rec combinations i k =
